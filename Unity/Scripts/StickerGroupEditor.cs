@@ -9,59 +9,57 @@ using UnityEngine.UI;
 [CanEditMultipleObjects]
 public class StickerGroupEditor : Editor
 {
-    float startX = 20;
-    float startY = 50;
-
+    int capacity = 0;
     float imageSize = 70;
 
     float verticalSpacing = 10;
-    float horizSpacing = 40;
+    float labelWidth = 90;
     
+    private void OnEnable()
+	{
+		capacity = ((StickerGroup)target).Stickers.Count;
+	}
+
     public override void OnInspectorGUI()
     {     
-        float x = startX;
-        float y = startY;
-
         StickerGroup group = (StickerGroup)target;
 
-        Rect position = new Rect(x, y, 70, 15);
-        EditorGUI.PrefixLabel(position, new GUIContent("Preview:"));
-
-        position = new Rect(x + 70 + horizSpacing, y, imageSize, imageSize);
-        group.preview = (Sprite)EditorGUI.ObjectField(position, group.preview, typeof(Sprite), false);
-        y += imageSize + verticalSpacing;
-
-        position = new Rect(x, y, 70, 15);
-        EditorGUI.PrefixLabel(position, new GUIContent("StickerCount:"));
-
-        position = new Rect(x + 70 + horizSpacing, y, 70, 15);
-        int temp = EditorGUI.IntField(position, group.StickerCount);
-        group.StickerCount = (temp < 0) ? 0 : temp;
-        y += 15 + verticalSpacing;
-
+        DrawCapacity();
         FixGroupSize(group);
-        DrawImages(x, y, group);
+        DrawImages(group);
 
         EditorUtility.SetDirty(group);
     }
 
+    private void DrawCapacity()
+    {
+        EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("StickerCount:", GUILayout.Width (labelWidth));
+
+            int temp = EditorGUILayout.DelayedIntField(capacity);
+            capacity = (temp < 0) ? 0 : temp;
+
+            GUILayout.Space(20);
+        EditorGUILayout.EndHorizontal();
+        GUILayout.Space(verticalSpacing);
+    }
+
     private void FixGroupSize(StickerGroup group)
     {
-        int count = group.Stickers.Count;
-        if (group.StickerCount < count)
+        int oldCapacity = group.Stickers.Count;
+        if (capacity < oldCapacity)
         {
-            group.Stickers.RemoveRange(group.StickerCount, count - group.StickerCount);
+            group.Stickers.RemoveRange(capacity, oldCapacity - capacity);
         }
         else
         {
-            group.Stickers.AddRange(new Sprite[group.StickerCount - count]);
+            group.Stickers.AddRange(new Sprite[capacity - oldCapacity]);
         }
     }
 
-    private void DrawImages(float x, float y, StickerGroup group)
+    private void DrawImages(StickerGroup group)
     {
-        Rect position;
-        for (int i = 0; i < group.StickerCount; i++)
+        for (int i = 0; i < capacity; i++)
         {
             string name = "Element " + (i + 1);
             float aspect = 1;
@@ -72,13 +70,15 @@ public class StickerGroupEditor : Editor
                 aspect = (float)group.Stickers[i].rect.width / group.Stickers[i].rect.height;
             }
 
-            position = new Rect(x + 70 + horizSpacing, y, imageSize * aspect, imageSize);
-            group.Stickers[i] = (Sprite)EditorGUI.ObjectField(position, group.Stickers[i], typeof(Sprite), false);
+            EditorGUILayout.BeginHorizontal();
+				GUILayout.Label(name, GUILayout.Width (labelWidth));
 
-            position = new Rect(x, y + imageSize / 2, 100, 15);
-            EditorGUI.PrefixLabel(position, new GUIContent(name));
+                group.Stickers[i] = (Sprite)EditorGUILayout.ObjectField (group.Stickers[i], typeof(Sprite), false,
+                new GUILayoutOption[] {GUILayout.Height(imageSize), GUILayout.Width(imageSize * aspect)});
 
-            y += imageSize + verticalSpacing;
+				GUILayout.Space(20);
+            EditorGUILayout.EndHorizontal();
+            GUILayout.Space(verticalSpacing);
         }
     }
 }

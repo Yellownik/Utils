@@ -9,8 +9,6 @@ namespace SelfieGame.Sticker.Storage
     public class StickerGroup : ScriptableObject
     {
         public Sprite preview;
-
-        public int StickerCount = 0;
         public List<Sprite> Stickers = new List<Sprite>();
     }
 }
