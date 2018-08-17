@@ -1,0 +1,16 @@
+[alias]
+	branch-name="!git rev-parse --abbrev-ref HEAD"
+	publish="!git push origin $(git branch-name)"
+[color]
+	branch = true
+	decorate = true
+	ui = true
+	status = true
+[color "decorate"]
+	HEAD = red black reverse
+	branch = yellow black bold
+	remoteBranch = yellow black dim
+[color "status"]
+	untracked = magenta black bold
+[core]
+	autocrlf = input
