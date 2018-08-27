@@ -1,6 +1,7 @@
 [alias]
 	branch-name="!git rev-parse --abbrev-ref HEAD"
 	publish="!git push origin $(git branch-name)"
+	rih="!f() { git rebase -i head~\"$1\"; }; f"
 [color]
 	branch = true
 	decorate = true
