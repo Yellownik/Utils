@@ -1,0 +1,47 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CalcRelativeForces
+#pragma kernel SumForces
+
+#define particleCount 1024 * 2
+#define threadCount 32
+
+RWStructuredBuffer<float3> positions;
+RWStructuredBuffer<float3> charges;
+RWStructuredBuffer<float3> forceMatrix;
+RWStructuredBuffer<float3> forces;
+
+
+[numthreads(threadCount, threadCount, 1)]
+void CalcRelativeForces(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x == id.y)
+    {
+        forceMatrix[id.x * particleCount + id.y] = float3(0, 0, 0);
+        return;
+    }
+
+    float3 delta = positions[id.y] - positions[id.x];
+    float distance = length(delta);
+    float mass = 1;//charges[id.y].x * charges[id.x].x * 10.1;
+    float charge = -1 * charges[id.y].y * charges[id.x].y * 10;
+
+    if (distance < 2.0 /*&& charge == 1*/)
+    {
+        forceMatrix[id.x * particleCount + id.y] = 10.0 * (mass + 0.000001f) * delta / (distance * distance * distance);
+    }
+    else
+    {
+        forceMatrix[id.x * particleCount + id.y] = (mass + charge) * delta / (distance * distance * distance);
+    }
+}
+
+[numthreads(threadCount, 1, 1)]
+void SumForces(uint3 id : SV_DispatchThreadID)
+{
+    uint i = 0;
+    while (i < particleCount)
+    {
+        forces[id.x] += forceMatrix[id.x * particleCount + i];
+        i++;
+    }
+}
