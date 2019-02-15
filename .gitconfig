@@ -2,6 +2,8 @@
 	branch-name="!git rev-parse --abbrev-ref HEAD"
 	publish="!git push origin $(git branch-name)"
 	rih="!f() { git rebase -i head~\"$1\"; }; f"
+	forget="git update-index --assume-unchanged"
+	recall="git update-index --no-assume-unchanged"
 [color]
 	branch = true
 	decorate = true
