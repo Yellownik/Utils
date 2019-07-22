@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
+/// <summary>
+/// Change string "#NAMESPACE#" in the Unity script template to the actual scrips path in project.
+/// For instance: Assets/ProjectName/Scripts/Logic -> ProjectName.Logic
+/// Script template path: {UnityFolder}/Editor/Data/Resources/ScriptTemplates
+/// </summary>
 public class AddNameSpace : UnityEditor.AssetModificationProcessor
 {
     public static void OnWillCreateAsset(string path)
