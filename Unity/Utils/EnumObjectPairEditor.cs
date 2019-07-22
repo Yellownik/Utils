@@ -1,23 +1,26 @@
 using UnityEngine;
 using UnityEditor;
-using System;
 
-namespace HangMan.ResourceStorage
+namespace HangMan
 {
     /// <summary>
     /// Custom Editor generates GUI and fields with labels of unique TEnum names.
+    /// These names will be updated with changes in the original enum. 
     /// Overrided script should contatin fields:
-    ///  Keys - List of Array of TEnum, where TEnum is any enum type;
-    ///  Values - List of Array of TObject, where TObject is any Unity object type;
+    ///  [SerializedField] List<TEnum> Keys, where TEnum is any enum type;
+    ///  [SerializedField] List<TObject> Values, where TObject is any Unity object type;
     /// </summary>
     public abstract class EnumObjectPairEditor : Editor
     {
+        public virtual string KeysName { get; protected set; } = "Keys";
+        public virtual string ValuesName { get; protected set; } = "Values";
+
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
 
-            var keys = serializedObject.FindProperty("Keys");
-            var values = serializedObject.FindProperty("Values");
+            var keys = serializedObject.FindProperty(KeysName);
+            var values = serializedObject.FindProperty(ValuesName);
             var names = keys.enumNames;
 
             FixArraySize(keys, names.Length);
@@ -51,8 +54,13 @@ namespace HangMan.ResourceStorage
             for (int i = 0; i < names.Length; i++)
             {
                 keys.GetArrayElementAtIndex(i).enumValueIndex = i;
-                EditorGUILayout.ObjectField(values.GetArrayElementAtIndex(i), new GUIContent(names[i]));
+                GenerateField(names[i], values.GetArrayElementAtIndex(i));
             }
+        }
+
+        protected virtual void GenerateField(string name, SerializedProperty elem)
+        {
+            EditorGUILayout.PropertyField(elem, new GUIContent(name));
         }
     }
 }
