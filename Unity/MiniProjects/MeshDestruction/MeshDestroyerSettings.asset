@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cdf1e49ea334d94f8eddfe67271e494, type: 3}
+  m_Name: MeshDestroyerSettings
+  m_EditorClassIdentifier: 
+  materials:
+  - {fileID: 2100000, guid: bbb24acbe12e48a448e56fd4f9e38f86, type: 2}
