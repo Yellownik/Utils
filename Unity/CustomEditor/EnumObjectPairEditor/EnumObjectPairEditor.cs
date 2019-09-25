@@ -1,14 +1,14 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace HangMan
+namespace Utils.CustomEditor
 {
     /// <summary>
     /// Custom Editor generates GUI and fields with labels of unique TEnum names.
     /// These names will be updated with changes in the original enum. 
     /// Overrided script should contatin fields:
-    ///  [SerializedField] List<TEnum> Keys, where TEnum is any enum type;
-    ///  [SerializedField] List<TObject> Values, where TObject is any Unity object type;
+    ///  [SerializeField] List<TEnum> Keys, where TEnum is any enum type;
+    ///  [SerializeField] List<TObject> Values, where TObject is any Unity object type;
     /// </summary>
     public abstract class EnumObjectPairEditor : Editor
     {
