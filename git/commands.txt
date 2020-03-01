@@ -17,3 +17,6 @@ git branch --merged| grep -v -E 'master|develop' | xargs git branch -d
 
 - List authors of a git repository including commit count and email
 git shortlog -e -s -n
+
+SourceTree conflict resolving + K3Diff
+'C:/Program Files/Unity/Hub/Editor/2018.2.20f1/Editor/Data/Tools/UnityYAMLMerge.exe' merge -p $BASE $REMOTE $LOCAL $MERGED

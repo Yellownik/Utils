@@ -1,17 +1,14 @@
 [alias]
 	branch-name="!git rev-parse --abbrev-ref HEAD"
+	prev-branch="!git name-rev $(git rev-parse @{-1}) --name-only"
 	publish="!git push origin $(git branch-name)"
 	rih="!f() { git rebase -i head~\"$1\"; }; f"
-	forget="git update-index --assume-unchanged"
-	recall="git update-index --no-assume-unchanged"
+	forget="!git update-index --assume-unchanged"
+	recall="!git update-index --no-assume-unchanged"
 	log-long  = log --date'=format:"%d-%b %H:%M:%S"' --format'=format:"%C(red)%h%C(reset)%C(auto)%d%C(reset) - %C(bold blue)%an%C(reset) - %C(cyan)%ad%C(reset)%n %C(white)%s%C(reset)"'
 	history = !git log-long --graph --abbrev-commit --decorate
-	mcs = "!f() { git log --all --oneline --decorate --no-merges --date=format:'%d-%b %H:%M:%S' --pretty=format:'%C(cyan)%ad%C(reset) %C(white)%s%C(reset)' --author=$(git config user.email) --since=$1; }; f"
-	standup = "!if [ -z $(git mcs yesterday.midnight) ]; then git mcs last.friday.midnight; else git mcs yesterday.midnight; fi;"
-	dstandup = "!if [ $(date +%u) -eq 1 ]; then git mcs last.friday.midnight; else git mcs yesterday.midnight; fi;"
-	st = "!git status --short | cat -n"
-	s = "!stage()   { git add        `git st | sed -n $1p | awk -F' ' '{ print $3 }'`; git st; }; stage"
-	u = "!unstage() { git reset HEAD `git st | sed -n $1p | awk -F' ' '{ print $3 }'`; git st; }; unstage"
+	my-commits = "!f() { git log --all --oneline --decorate --no-merges --date=format:'%d-%b %H:%M:%S' --pretty=format:'%C(cyan)%ad%C(reset) %C(white)%s%C(reset)' --author=$(git config user.email) --since=$1; }; f"
+	standup = "!if [ $(date +%u) -eq 1 ]; then git my-commits last.friday.midnight; else git my-commits yesterday.midnight; fi;"
 [color]
 	branch = true
 	decorate = true
@@ -24,4 +21,11 @@
 [color "status"]
 	untracked = magenta black bold
 [core]
-	autocrlf = input
+	autocrlf = true
+	whitespace = C:/Program Files/Git
+	safecrlf = false
+[difftool "sourcetree"]
+	cmd = 'C:/Program Files/Unity/Hub/Editor/2018.2.20f1/Editor/Data/Tools/UnityYAMLMerge.exe' merge -p $BASE $REMOTE $LOCAL $MERGED
+[mergetool "sourcetree"]
+	cmd = 'C:/Program Files/Unity/Hub/Editor/2018.2.20f1/Editor/Data/Tools/UnityYAMLMerge.exe' merge -p $BASE $REMOTE $LOCAL $MERGED
+	trustExitCode = true
