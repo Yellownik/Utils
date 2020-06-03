@@ -3,10 +3,14 @@
 	prev-branch="!git name-rev $(git rev-parse @{-1}) --name-only"
 	publish="!git push origin $(git branch-name)"
 	rih="!f() { git rebase -i head~\"$1\"; }; f"
-	forget="!git update-index --assume-unchanged"
-	recall="!git update-index --no-assume-unchanged"
+	hide="!git update-index --assume-unchanged"
+	unhide="!git update-index --no-assume-unchanged"
 	log-long  = log --date'=format:"%d-%b %H:%M:%S"' --format'=format:"%C(red)%h%C(reset)%C(auto)%d%C(reset) - %C(bold blue)%an%C(reset) - %C(cyan)%ad%C(reset)%n %C(white)%s%C(reset)"'
 	history = !git log-long --graph --abbrev-commit --decorate
+	add-ours = "!f() { git checkout --ours \"$1\" && git add \"$1\"; }; f"
+	add-their = "!f() { git checkout --theirs \"$1\" && git add \"$1\"; }; f"
+	status-grep = "!f() { git status | grep \"$1\"; }; f"
+	branch-grep = "!f() { git branch --all | grep \"$1\"; }; f"
 	my-commits = "!f() { git log --all --oneline --decorate --no-merges --date=format:'%d-%b %H:%M:%S' --pretty=format:'%C(cyan)%ad%C(reset) %C(white)%s%C(reset)' --author=$(git config user.email) --since=$1; }; f"
 	standup = "!if [ $(date +%u) -eq 1 ]; then git my-commits last.friday.midnight; else git my-commits yesterday.midnight; fi;"
 [color]
@@ -25,7 +29,7 @@
 	whitespace = C:/Program Files/Git
 	safecrlf = false
 [difftool "sourcetree"]
-	cmd = 'C:/Program Files/Unity/Hub/Editor/2018.2.20f1/Editor/Data/Tools/UnityYAMLMerge.exe' merge -p $BASE $REMOTE $LOCAL $MERGED
+	cmd = 'C:/Program Files/Unity/Hub/Editor/2018.2.20f1/Editor/Data/Tools/UnityYAMLMerge.exe' merge -p $BASE $LOCAL $REMOTE $MERGED
 [mergetool "sourcetree"]
-	cmd = 'C:/Program Files/Unity/Hub/Editor/2018.2.20f1/Editor/Data/Tools/UnityYAMLMerge.exe' merge -p $BASE $REMOTE $LOCAL $MERGED
+	cmd = 'C:/Program Files/Unity/Hub/Editor/2018.2.20f1/Editor/Data/Tools/UnityYAMLMerge.exe' merge -p $BASE $LOCAL $REMOTE $MERGED
 	trustExitCode = true
