@@ -1,7 +1,6 @@
 [alias]
 	branch-name="!git rev-parse --abbrev-ref HEAD"
 	prev-branch="!git name-rev $(git rev-parse @{-1}) --name-only"
-	publish="!git push origin $(git branch-name)"
 	rih="!f() { git rebase -i head~\"$1\"; }; f"
 	hide="!git update-index --assume-unchanged"
 	unhide="!git update-index --no-assume-unchanged"

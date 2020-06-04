@@ -43,7 +43,7 @@ alias gom='git checkout master'
 alias got='git checkout --track'
 ### fetch/pull/push
 alias gfo='git fetch origin'
-alias gpub='git publish'
+alias gpl='git pull'
 ### git rebase
 alias gr='git rebase'
 alias gra='git rebase --abort'
@@ -62,3 +62,22 @@ alias gsts='git stash show'
 alias gu='git number reset HEAD'
 alias wtf='git reset --hard head'
 alias smc='git my-commits'
+
+function _branch_publish(){
+    if ! [ -z $1 ]; then
+        git push origin "$1":"$1"
+    else
+	    git push origin $(git branch-name)
+  fi
+}
+alias gpub='_branch_publish'
+
+function _branch_update(){
+    if ! [ -z $1 ]; then
+        git fetch origin "$1":"$1"
+    else
+         git pull origin $(git branch-name)
+  fi
+}
+alias gup="_branch_update"
+alias gupd='_branch_update develop'
