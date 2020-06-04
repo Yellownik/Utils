@@ -81,3 +81,26 @@ function _branch_update(){
 }
 alias gup="_branch_update"
 alias gupd='_branch_update develop'
+
+### pull "main_branch", create "new_branch" from "main_branch", push "new_branch" and remove it locally
+### $ _update_branch_and_create_new develop team_1/build/my_test
+function _update_branch_and_create_new(){
+    main_branch=$1
+    if [ -z $main_branch ]; then
+        echo "Please specify a branch to update."
+        return
+    fi
+
+    new_branch=$2
+    if [ -z $new_branch ]; then
+        echo "Please specify a new branch name."
+        return
+    fi
+
+    git fetch origin "$main_branch":"$main_branch"
+    git branch "$new_branch" "$main_branch"
+    git push origin "$new_branch":"$new_branch"
+
+    git show --oneline "$new_branch"
+    git branch -D "$new_branch"
+}
