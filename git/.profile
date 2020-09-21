@@ -8,9 +8,10 @@ alias gath='git add-their'
 ### git branch
 alias gb='git branch'
 alias gba='git branch --all'
-alias gbag='git branch --all | grep'
+alias gbag='git branch-grep'
 alias gbc='git branch --contains'
 alias gbd='git branch -D'
+alias gbt='git branch-template'
 alias gbmh='git branch -m $(git branch-name)'
 ### git commit
 alias gc='git commit'
@@ -21,6 +22,7 @@ alias gcp='git cherry-pick'
 ### git diff
 alias gd='git number diff'
 alias gdc='git number diff --cached'
+alias gdu='git diff --name-only --diff-filter=U'
 alias gds='git diff --stat'
 alias gdh='git diff HEAD~1 HEAD'
 alias gdhs='git diff --stat HEAD~1 HEAD'
@@ -35,15 +37,15 @@ alias gm='git merge'
 alias gma='git merge --abort'
 alias gmd='git merge develop'
 alias gmnf='git merge --no-ff'
-###  git checkout
+### git checkout
 alias go='git number checkout'
 alias gob='git checkout -b'
 alias god='git checkout develop'
 alias gom='git checkout master'
 alias got='git checkout --track'
+alias goto='git got-origin'
 ### fetch/pull/push
 alias gfo='git fetch origin'
-alias gpl='git pull'
 ### git rebase
 alias gr='git rebase'
 alias gra='git rebase --abort'
@@ -70,7 +72,7 @@ function _branch_publish(){
 	    git push origin $(git branch-name)
   fi
 }
-alias gpub='_branch_publish'
+alias gph='_branch_publish'
 
 function _branch_update(){
     if ! [ -z $1 ]; then
@@ -79,8 +81,8 @@ function _branch_update(){
          git pull origin $(git branch-name)
   fi
 }
-alias gup="_branch_update"
-alias gupd='_branch_update develop'
+alias gpl="_branch_update"
+alias gpld='_branch_update develop'
 
 ### pull "main_branch", create "new_branch" from "main_branch", push "new_branch" and remove it locally
 ### $ _update_branch_and_create_new develop team_1/build/my_test

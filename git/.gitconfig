@@ -10,6 +10,8 @@
 	add-their = "!f() { git checkout --theirs \"$1\" && git add \"$1\"; }; f"
 	status-grep = "!f() { git status | grep \"$1\"; }; f"
 	branch-grep = "!f() { git branch --all | grep \"$1\"; }; f"
+	branch-template = "!f() { git checkout -b team_1/feature/\"$1\"; }; f"
+	got-origin = "!f() { git checkout --track origin/\"$1\"; }; f"
 	my-commits = "!f() { git log --all --oneline --decorate --no-merges --date=format:'%d-%b %H:%M:%S' --pretty=format:'%C(cyan)%ad%C(reset) %C(white)%s%C(reset)' --author=$(git config user.email) --since=$1; }; f"
 	standup = "!if [ $(date +%u) -eq 1 ]; then git my-commits last.friday.midnight; else git my-commits yesterday.midnight; fi;"
 [color]
