@@ -5,20 +5,55 @@ alias gau='git add -u'
 alias gaaa='git add --all'
 alias gaou='git add-ours'
 alias gath='git add-their'
+
 ### git branch
 alias gb='git branch'
 alias gba='git branch --all'
-alias gbag='git branch-grep'
+function _branch_grep(){
+    git branch --all | grep "$1" | while read -r line; do echo "${line/remotes\/}"; done
+}
+alias gbag='_branch_grep'
+alias gbaf='_branch_grep'
+
+function _get_build_version(){
+    git fetch --prune origin
+    build=$(git branch --remote | grep origin/build/v | tail -1)
+    v_build="${build/origin\/build\/}"
+    echo $v_build
+}
+function _branch_version(){ 
+    git checkout -b "$(_get_build_version)"/"$1"
+}
+alias gbv='_branch_version'
+
+function _branch_build(){ 
+    git checkout -b "$(_get_build_version)"/build/"$1"
+}
+alias gbb='_branch_build'
+
+function _branch_feature(){ 
+    git checkout -b "$(_get_build_version)"/$(git config --global user.feature)/"$1"
+}
+alias gbf='_branch_feature'
+
+function _go_build(){
+    build=$(git branch | grep build/v | tail -1 | xargs)
+    echo "$build"
+    git checkout "$build"
+}
+alias gob='_go_build'
+
 alias gbc='git branch --contains'
 alias gbd='git branch -D'
-alias gbt='git branch-template'
 alias gbmh='git branch -m $(git branch-name)'
+
 ### git commit
 alias gc='git commit'
 alias gcm='git commit -m'
 alias gca='git commit --amend'
 alias gcano='git commit --amend --no-edit'
 alias gcp='git cherry-pick'
+
 ### git diff
 alias gd='git number diff'
 alias gdc='git number diff --cached'
@@ -26,24 +61,27 @@ alias gdu='git diff --name-only --diff-filter=U'
 alias gds='git diff --stat'
 alias gdh='git diff HEAD~1 HEAD'
 alias gdhs='git diff --stat HEAD~1 HEAD'
+
 ### git history/status
 alias gk='gitk --all'
 alias gh='git history --all'
 alias ghh='git history'
 alias gs='git number -s'
 alias gsg='git status-grep'
+
 ### git merge
 alias gm='git merge'
 alias gma='git merge --abort'
 alias gmd='git merge develop'
 alias gmnf='git merge --no-ff'
+
 ### git checkout
 alias go='git number checkout'
-alias gob='git checkout -b'
+alias got='git checkout --track'
 alias god='git checkout develop'
 alias gom='git checkout master'
-alias got='git checkout --track'
 alias goto='git got-origin'
+
 ### fetch/pull/push
 alias gfo='git fetch origin'
 ### git rebase
