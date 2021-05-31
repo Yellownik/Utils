@@ -1,6 +1,8 @@
 ### git add
 alias ga='git number add'
 alias gaa='git add .'
+alias gac='git add *.cs'
+alias gapc='git add -p *.cs'
 alias gau='git add -u'
 alias gaaa='git add --all'
 alias gaou='git add-ours'
