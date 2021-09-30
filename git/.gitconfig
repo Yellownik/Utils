@@ -1,5 +1,6 @@
 [user]
-	feature = new_bundles
+	feature = v15.0.0/feature
+	build = v14.0.0/build
 [alias]
 	branch-name="!git rev-parse --abbrev-ref HEAD"
 	prev-branch="!git name-rev $(git rev-parse @{-1}) --name-only"

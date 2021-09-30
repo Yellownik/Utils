@@ -19,7 +19,7 @@ alias gbaf='_branch_grep'
 
 function _get_build_version(){
     git fetch --prune origin
-    build=$(git branch --remote | grep origin/build/v | tail -1)
+    build=$(git branch --remote | grep origin/build/v | sort -V --version-sort | tail -1)
     v_build="${build/origin\/build\/}"
     echo $v_build
 }
@@ -34,12 +34,12 @@ function _branch_build(){
 alias gbb='_branch_build'
 
 function _branch_feature(){ 
-    git checkout -b "$(_get_build_version)"/$(git config --global user.feature)/"$1"
+    git checkout -b "$(git config --global user.feature)"/"$1"
 }
 alias gbf='_branch_feature'
 
 function _go_build(){
-    build=$(git branch | grep build/v | tail -1 | xargs)
+    build=$(git branch | grep build/v | sort -V --version-sort | tail -1 | xargs)
     echo "$build"
     git checkout "$build"
 }
@@ -51,7 +51,14 @@ alias gbmh='git branch -m $(git branch-name)'
 
 ### git commit
 alias gc='git commit'
-alias gcm='git commit -m'
+
+function _add_task_code_to_commit(){
+    code=$( _branch_name | egrep -o 'MP-[[:digit:]]*')
+    message="$code $1"
+	git commit -m "$code $1"
+}
+alias gcm='_add_task_code_to_commit'
+
 alias gca='git commit --amend'
 alias gcano='git commit --amend --no-edit'
 alias gcp='git cherry-pick'
