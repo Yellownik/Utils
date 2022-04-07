@@ -17,16 +17,19 @@ function _branch_grep(){
 alias gbag='_branch_grep'
 alias gbaf='_branch_grep'
 
-function _get_build_version(){
+function _get_build_version_branch(){
     git fetch --prune origin
     build=$(git branch --remote | grep origin/build/v | sort -V --version-sort | tail -1)
+  echo $build
+}
+alias gbv='_get_build_version_branch'
+
+function _get_build_version(){
+    git fetch --prune origin
+    build=$(_get_build_version_branch)
     v_build="${build/origin\/build\/}"
-    echo $v_build
+  echo $v_build
 }
-function _branch_version(){ 
-    git checkout -b "$(_get_build_version)"/"$1"
-}
-alias gbv='_branch_version'
 
 function _branch_build(){ 
     git checkout -b "$(_get_build_version)"/build/"$1"
@@ -44,9 +47,22 @@ function _go_build(){
     git checkout "$build"
 }
 alias gob='_go_build'
+alias gof='git checkout "$(git config --global user.feature)_feature"'
 
 alias gbc='git branch --contains'
-alias gbd='git branch -D'
+alias gbd='git branch -d'
+alias gbD='git branch -D'
+
+function _branch_delete_origin(){
+    local branch_name="${1/origin\/}"
+    if [[ -z ${branch_name} ]]; then
+        echo "Empty argument"
+        return
+    fi
+    
+    git push origin :$branch_name
+}
+alias gbdo='_branch_delete_origin'
 alias gbmh='git branch -m $(git branch-name)'
 
 ### git commit
