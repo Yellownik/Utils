@@ -95,10 +95,9 @@ alias gs='git number -s'
 alias gsg='git status-grep'
 
 ### git merge
-alias gm='git merge'
+alias gm='git merge -Xignore-space-change'
 alias gma='git merge --abort'
-alias gmd='git merge develop'
-alias gmnf='git merge --no-ff'
+alias gmnf='git merge -Xignore-space-change --no-ff'
 
 ### git checkout
 alias go='git number checkout'
