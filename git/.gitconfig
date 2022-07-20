@@ -28,7 +28,7 @@
 	untracked = magenta black bold
 [core]
 	autocrlf = true
-	whitespace = C:/Program Files/Git
+	whitespace = cr-at-eol
 	safecrlf = false
 [difftool "sourcetree"]
 	cmd = 'C:/Program Files/Unity/Hub/Editor/2018.2.20f1/Editor/Data/Tools/UnityYAMLMerge.exe' merge -p $BASE $LOCAL $REMOTE $MERGED
