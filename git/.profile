@@ -69,7 +69,7 @@ alias gbmh='git branch -m $(git branch-name)'
 alias gc='git commit'
 
 function _add_task_code_to_commit(){
-    code=$( _branch_name | egrep -o 'MP-[[:digit:]]*')
+    code=$( _branch_name | egrep -o 'CAT-[[:digit:]]*')
     message="$code $1"
 	git commit -m "$code $1"
 }
@@ -81,7 +81,9 @@ alias gcp='git cherry-pick'
 
 ### git diff
 alias gd='git number diff'
+alias gdw='git number diff --word-diff'
 alias gdc='git number diff --cached'
+alias gdcw='git number diff --cached --word-diff'
 alias gdu='git diff --name-only --diff-filter=U'
 alias gds='git diff --stat'
 alias gdh='git diff HEAD~1 HEAD'
@@ -136,12 +138,12 @@ function _reset_all(){
 alias wtf='_reset_all'
 
 function _show_merged(){
-    git branch --merged| grep -v -E 'master|"$(_get_build_version)"'
+    git branch --merged| grep -v -E 'master|develop|"$(_get_build_version)"'
 }
 alias gsm='_show_merged'
 
 function _remove_merged(){
-    git branch --merged| grep -v -E 'master|"$(_get_build_version)"' | xargs git branch -d
+    git branch --merged| grep -v -E 'master|develop|"$(_get_build_version)"' | xargs git branch -d
 }
 alias grm='_remove_merged'
 
