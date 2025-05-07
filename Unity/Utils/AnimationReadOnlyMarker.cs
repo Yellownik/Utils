@@ -8,6 +8,14 @@ public static class AnimationReadOnlyMarker
 {
     private const string TargetFolder = "Assets/_Project/_DefaultAnimations/";
 
+    private static void ChangeHideFlags(Object obj)
+    {
+        obj.hideFlags |= HideFlags.NotEditable;
+        //obj.hideFlags &= ~HideFlags.NotEditable;
+        
+        EditorUtility.SetDirty(obj);
+    }
+    
     [MenuItem("Tools/" + nameof(MarkReadOnlyClips))]
     public static void MarkReadOnlyClips()
     {
@@ -18,8 +26,7 @@ public static class AnimationReadOnlyMarker
                 continue;
             
             var clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(path);
-            clip.hideFlags |= HideFlags.NotEditable;
-            EditorUtility.SetDirty(clip);
+            ChangeHideFlags(clip);
         }
         
         AssetDatabase.SaveAssets();
@@ -36,8 +43,7 @@ public static class AnimationReadOnlyMarker
                 continue;
             
             var animator = AssetDatabase.LoadAssetAtPath<AnimatorController>(path);
-            animator.hideFlags |= HideFlags.NotEditable;
-            EditorUtility.SetDirty(animator);
+            ChangeHideFlags(animator);
 
             MarkStatesReadOnly(animator);
         }
@@ -52,8 +58,7 @@ public static class AnimationReadOnlyMarker
                 foreach (var child in sm.states)
                 {
                     var state = child.state;
-                    state.hideFlags |= HideFlags.NotEditable;
-                    EditorUtility.SetDirty(state);
+                    ChangeHideFlags(state);
                 }
 
                 foreach (ChildAnimatorStateMachine childSm in sm.stateMachines) 
@@ -66,8 +71,7 @@ public static class AnimationReadOnlyMarker
             foreach (var child in sm.states)
             {
                 var state = child.state;
-                state.hideFlags |= HideFlags.NotEditable;
-                EditorUtility.SetDirty(state);
+                ChangeHideFlags(state);
             }
         
             foreach (var childSm in sm.stateMachines) 
